@@ -9,7 +9,15 @@ import sqlite3
 # Load the variables from the .env file
 load_dotenv(override=True)
 
-DB_PATH = Path(__file__).resolve().parent / os.getenv("DB_PATH", "trading.db")
+# 1. Fetch the raw string from your .env file
+raw_db_path = os.getenv("DB_PATH", "trading.db")
+
+# 2. Check if the path is absolute (starts with '/' like /trading_bot)
+if os.path.isabs(raw_db_path):
+    DB_PATH = Path(raw_db_path) # Use the exact path on the server
+else:
+    # Use the relative path for your local PC setup
+    DB_PATH = Path(__file__).resolve().parent / raw_db_path
 
 app = FastAPI()
 
