@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 
 # Load the variables from the .env file
-load_dotenv()
+load_dotenv(override=True)
 
 DB_PATH = Path(__file__).resolve().parent / os.getenv("DB_PATH", "trading.db")
 
