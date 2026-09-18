@@ -47,7 +47,7 @@ def get_metrics():
     cursor.execute("SELECT SUM(pnl) FROM positions")
     total_pnl = cursor.fetchone()[0] or 0.0
     
-    cursor.execute("SELECT SUM(COALESCE(amount, 0) * COALESCE(entry_price, 0)) FROM positions")
+    cursor.execute("SELECT SUM(COALESCE(amount, 0) * COALESCE(entry_price, 0)) FROM positions WHERE status == 'OPEN'")
     total_size = cursor.fetchone()[0] or 0.0
     
     cursor.execute("SELECT COUNT(*) FROM positions WHERE pnl > 0 and status != 'OPEN'")
