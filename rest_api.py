@@ -47,6 +47,9 @@ def get_metrics():
     cursor.execute("SELECT SUM(pnl) FROM positions")
     total_pnl = cursor.fetchone()[0] or 0.0
     
+    cursor.execute("SELECT SUM(COALESCE(amount, 0) * COALESCE(entry_price, 0)) FROM positions")
+    total_size = cursor.fetchone()[0] or 0.0
+    
     cursor.execute("SELECT COUNT(*) FROM positions WHERE pnl > 0 and status != 'OPEN'")
     win_trades = cursor.fetchone()[0] or 0
     
@@ -56,7 +59,8 @@ def get_metrics():
     return {
         "total_pnl": round(total_pnl, 2),
         "total_trades": total_trades,
-        "win_rate": f"{round(win_rate, 2)}%"
+        "win_rate": f"{round(win_rate, 2)}%",
+        "total_size": f"{round(total_size, 2)}"
     }
 
 @app.get("/api/dashboard/positions")
